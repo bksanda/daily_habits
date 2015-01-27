@@ -64,3 +64,40 @@ new Morris.Line({
 
 <%= debug params %>
 <%= debug @user %>
+
+/////////////
+<h2>Goals</h2>
+<div id="goals">
+<% form_for :goals, remote: true do |f| %>
+  <%= f.check_box :completed_today %>
+  <%= f.submit "Update" %>
+  <%= f.label :completed_today, goal.name %>
+  <%= link_to "goals_update", goal, method: :delete, data: { confirm: "Are you sure?", remote: true} %>
+<% end %>
+
+</div>
+
+<h2>Complete Goals</h2>
+<div id="complete_goals">
+<% bootstrap_form_for :goals, remote: true do |f| %>
+  <%= f.check_box :completed_today %>
+  <%= f.submit "Update" %>
+  <%= f.label :completed_today, goal.name %>
+  <%= link_to "goals_update", goal, method: :delete, data: { confirm: "Are you sure?", remote: true} %>
+<% end %> %>
+</div>
+
+
+jQuery.fn.submitOnCheck = function() {
+  this.find('input[type=submit]').remove();
+  this.find('input[type=checkbox]').click(function() {
+    $(this).parent('form').submit();
+  });
+  return this;
+}
+
+$(function() {
+  $('.edit_goal').submitOnCheck();
+});
+
+

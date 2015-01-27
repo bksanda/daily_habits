@@ -1,16 +1,4 @@
 <!-- users goals update / create page also posts to goals DB in event of new user inputted goal ; notifications opt in, posts to user DB ; notifications opt in goes to User DB, new goals go to goals DB & goalsusers DB, add new goal that already exists goes to goalsusers db -->
-
-
-<h3>Goals</h3>
-
-<% if @goals.any? %>
-    <% @goals.each do |goal| %>
-        <%= goal.name %>
-    <% end %>
-<% else %>
-    <p>No Goals</p>
-<% end %>
-
 <!--
 1) ajax delete (make goals inactive) button (within table row)
 2) form for custom create and make that ajax so it appears in the list of goals
@@ -18,11 +6,26 @@
 5) counting the goals as you select prepopulated goals
 -->
 
+<h1>Goals</h1>
+
+<% if @goals.any? %>
+    <% @goals.each do |goal| %>
+        <li><%= goal.name %></li>
+    <% end %>
+<% else %>
+    <p>No Goals</p>
+<% end %>
+
+
+</div>
+
 
 <%= bootstrap_form_for :addgoal do |f| %>
   <%= f.text_field :name, placeholder: "Enter your custom goal" %>
   <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
+
+
 
 
 

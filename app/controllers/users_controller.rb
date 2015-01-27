@@ -49,8 +49,8 @@ class UsersController < ApplicationController
     @user.phone = params[:user][:phone]
     @user.save
 
-    # @goals.each do |goal_id|
-    #   @user.goals << Goal.find(goal_id) unless goal_id.blank?
+    #@goals.each do |goal_id|
+    #@user.goals << Goal.find(goal_id) unless goal_id.blank?
     redirect_to user_path(@user)
   end
 
@@ -63,8 +63,7 @@ class UsersController < ApplicationController
 
   def goals
     @goal = Goal.new
-    @goals_user = GoalsUser.where(user_id: @user.id)  # join table for goals and users
-    # @goals = Goal.joins(: .where(goal_id {goal_id: @goal.id)
+    @goals_user = GoalsUser.where(user_id: @user.id)
     temp_goal_id = @goals_user.select(:goal_id)
     @goals = Goal.where(id: temp_goal_id)
   end
@@ -77,11 +76,32 @@ class UsersController < ApplicationController
     @goal = Goal.create(goal_params)
     GoalsUser.create({user_id:@user.id,goal_id:@goal.id})
     # @user.goals << GoalsUser
-
     redirect_to user_path
+
+    #ajax?
+    respond_to do |format|
+      format.html { redirect_to users_update_path }
+      format.js
+    end
   end
 
   def goals_update
+    @goal = GoalUser.find_by_id(params[:id])
+
+    #goal update so can inactivate (users_update_path)
+    @goal.update_attributes(goal_params)
+
+    #do we need this??
+    @inc_goals = GoalsUser.where(completed_today: false)
+    @done_goals = GoalsUser.where(completed_today: true)
+
+    redirect_to addgoal_path
+
+    #ajax?
+    respond_to do |format|
+      format.html { redirect_to users_update_path }
+      format.js
+    end
   end
 
   def awards

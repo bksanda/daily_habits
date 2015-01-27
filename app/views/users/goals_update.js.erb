@@ -1,0 +1,5 @@
+<% if @goal_user.completed_today? %>
+  $('#goals_form_<%= @goal.id %>').appendTo('#done_goals');
+<% else %>
+  $('#goals_form_<%= @goal.id %>').appendTo('#goals');
+<% end %>

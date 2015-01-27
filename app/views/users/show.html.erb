@@ -9,8 +9,8 @@
     <div class="col-md-9 postbox">
       <h1><%= @user.name %></h1>
 
-<%= link_to "Edit Your Settings", edit_user_path(@user) %>
-<%= link_to "Update Your Goals", goals_path(@user) %>
+<p><%= link_to "Edit Your Settings", edit_user_path(@user) %></p>
+<p><%= link_to "Update Your Goals", goals_path(@user) %></p>
 
 <!-- AJAX Put in some check off goals completed -->
 
@@ -26,13 +26,12 @@
         <h3><strong><%= @user.name %>'s Goals for Today:</h3></strong>
 
         <% @goals.each do |goal| %>
-        <div>
-
-          <ul>
             <table class="post table-striped">
-              <li> <%= goal.name %><button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span></button></li>
+            <tr>
+              <td> <%= link_to goal.name, goalshow_path(goal.name) %></td>
+              <td><%= link_to "<button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span></button>"html_safe, goal, method: :delete, data: { confirm: 'Are you Sure?'} %></td>
               <br>
-
+            <tr>
             </table>
           </ul>
         </div>
