@@ -57,20 +57,21 @@ class UsersController < ApplicationController
 
 # USER SETTINGS UPDATE METHOD
   def update
-    if @user.phone != params[:user][:phone]
-      @user.phone = params[:user][:phone]
-      @user.po_email = params[:user][:po_email]
-      @user.save
-      flash[:success] = "Info changed successfully!"
+    phone_changed = @user.phone != params[:user][:phone]
+    email_changed = @user.po_email != params[:user][:po_email]
+
+    @user.phone = params[:user][:phone]
+    @user.po_email = params[:user][:po_email]
+    @user.save
+    flash[:success] = "Info changed successfully!"
+
+    if phone_changed
       send_text_greeting
     end
-    if @user.po_email != params[:user][:po_email]
-      @user.phone = params[:user][:phone]
-      @user.po_email = params[:user][:po_email]
-      @user.save
-      flash[:success] = "Info changed successfully!"
-      UserMailer.email_notify_po(@user).deliver_now
+    if email_changed
+       UserMailer.email_notify_po(@user).deliver_now
     end
+
     # @goals.each do |goal_id|
     #   @user.goals << Goal.find(goal_id) unless goal_id.blank?
 
